@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ctrl+Create — Papercut Code Studio</title>
+<link rel="stylesheet" href="css/theme.css?v=14">
+<link rel="stylesheet" href="css/blocks.css?v=14">
+<link rel="stylesheet" href="css/game.css?v=14">
+<link rel="stylesheet" href="css/enhancements.css?v=14">
+<link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+
+  <!-- ======================================================= TOP BAR -->
+  <header id="topbar">
+    <div class="brand">
+      <span class="brand-mark">✂</span>
+      <h1>Ctrl+Create</h1>
+      <span class="brand-sub">papercut code studio</span>
+    </div>
+
+    <div class="run-controls">
+      <button id="btn-flag" class="ctl ctl-flag" title="Run (green flag)">⚑</button>
+      <button id="btn-stop" class="ctl ctl-stop" title="Stop all">⬣</button>
+      <button id="btn-play" class="ctl ctl-play" title="Play fullscreen">▶</button>
+      <button id="btn-pause" class="ctl ctl-debug" title="Pause running code" aria-label="Pause running code">Ⅱ</button>
+      <button id="btn-step" class="ctl ctl-debug" title="Run one block" aria-label="Run one block">⇥</button>
+    </div>
+
+    <div class="player-hud">
+      <div id="hud-level" class="hud-chip" title="Your maker level">
+        <span class="hud-icon">★</span>
+        <span id="hud-level-num">1</span>
+        <div class="xp-track"><div id="hud-xp-fill" class="xp-fill"></div></div>
+      </div>
+      <button id="btn-achievements" class="hud-chip" title="Achievements">🏆 <span id="hud-ach-count">0</span></button>
+      <button id="btn-badges" class="hud-chip" title="Badges">🎖 <span id="hud-badge-count">0</span></button>
+      <button id="btn-quests" class="hud-chip" title="Quests / Levels">🗺 Quests</button>
+      <button id="btn-projects" class="hud-chip" title="My projects">📁 Projects</button>
+      <span id="save-status" class="save-status" role="status" aria-live="polite">Saved</span>
+      <button id="btn-settings" class="hud-chip" title="Learning and classroom settings" aria-label="Learning and classroom settings">⚙</button>
+    </div>
+  </header>
+
+  <!-- ======================================================= MAIN LAYOUT -->
+  <main id="layout">
+
+    <!-- palette rail: category buttons -->
+    <nav id="cat-rail" aria-label="Block categories"><!-- filled by palette.js --></nav>
+
+    <!-- palette: block templates for selected category -->
+    <section id="palette" aria-label="Block palette"><!-- filled by palette.js --></section>
+
+    <!-- scripting workspace -->
+    <section id="workspace-wrap">
+      <div id="workspace" tabindex="0" aria-label="Scripting area">
+        <div id="ws-canvas"><!-- top-level scripts live here --></div>
+        <div id="ws-hint" class="ws-hint">Drag blocks here to build your code ✂</div>
+      </div>
+      <div id="trash" title="Drag here to delete">🗑</div>
+    </section>
+
+    <!-- stage + sprites -->
+    <aside id="stage-side">
+      <div id="stage-frame" class="paper-card">
+        <canvas id="stage" width="480" height="360"></canvas>
+        <div id="stage-overlays"><!-- speech bubbles, variable monitors, ask prompt --></div>
+      </div>
+      <div id="sprite-panel" class="paper-card">
+        <div class="panel-head">
+          <h2>Sprites</h2>
+          <button id="btn-add-sprite" title="Add a sprite">＋</button>
+        </div>
+        <div id="sprite-list"><!-- filled by stage.js --></div>
+        <div id="sprite-props"><!-- x / y / size / dir readout --></div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ======================================================= GAME OVERLAYS -->
+  <div id="toast-dock" aria-live="polite"><!-- achievement toasts --></div>
+
+  <dialog id="dlg-achievements" class="paper-dialog">
+    <div class="dlg-head"><h2>🏆 Achievements</h2><button class="dlg-close" data-close>✕</button></div>
+    <div id="ach-grid" class="dlg-body"></div>
+  </dialog>
+
+  <dialog id="dlg-badges" class="paper-dialog">
+    <div class="dlg-head"><h2>🎖 Badges</h2><button class="dlg-close" data-close>✕</button></div>
+    <div id="badge-grid" class="dlg-body"></div>
+  </dialog>
+
+  <dialog id="dlg-quests" class="paper-dialog">
+    <div class="dlg-head"><h2>🗺 Quests</h2><button class="dlg-close" data-close>✕</button></div>
+    <div id="quest-list" class="dlg-body"></div>
+  </dialog>
+
+  <dialog id="dlg-levelup" class="paper-dialog levelup">
+    <div id="levelup-body"></div>
+  </dialog>
+
+  <!-- discreet teacher link: visible to grown-ups, out of kids' way -->
+  <a id="teacher-link" href="./teacher-guide.html" target="_blank" rel="noopener"
+     title="Teacher guide and standards alignment"
+     style="position:fixed;left:10px;bottom:8px;z-index:60;font:600 11px/1.4 -apple-system,'SF Pro Rounded','Segoe UI',ui-rounded,sans-serif;color:#6b6152;text-decoration:none;background:rgba(251,246,234,.85);border:1.5px solid #d8cbae;border-radius:999px;padding:3px 10px;opacity:.75">
+    🍎 Grown-Ups' Corner (Teacher Guide &amp; Standards)</a>
+
+  <!-- ======================================================= SCRIPTS -->
+  <script src="js/core.js?v=14"></script>
+  <script src="js/blockDefs.js?v=14"></script>
+  <script src="js/editor/blockRender.js?v=14"></script>
+  <script src="js/editor/palette.js?v=14"></script>
+  <script src="js/editor/workspace.js?v=14"></script>
+  <script src="js/engine/sound.js?v=14"></script>
+  <script src="js/engine/fx.js?v=14"></script>
+  <script src="js/engine/stage.js?v=14"></script>
+  <script src="js/engine/interpreter.js?v=14"></script>
+  <script src="js/projectIO.js?v=14"></script>
+  <script src="js/game/progress.js?v=14"></script>
+  <script src="js/game/achievements.js?v=14"></script>
+  <script src="js/game/quests.js?v=14"></script>
+  <script src="js/game/ui.js?v=14"></script>
+  <script src="js/editor/projects.js?v=14"></script>
+  <script src="js/editor/playmode.js?v=14"></script>
+  <script src="js/main.js?v=14"></script>
+  <script src="js/enhancements.js?v=14"></script>
+</body>
+</html>

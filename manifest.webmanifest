@@ -1,0 +1,10 @@
+{
+  "name": "Ctrl+Create — Papercut Code Studio",
+  "short_name": "Ctrl+Create",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#e8ddc7",
+  "theme_color": "#fbf6ea",
+  "description": "An offline-friendly papercut block coding studio for classrooms.",
+  "icons": [{ "src": "assets/ui/quest.png", "sizes": "256x256", "type": "image/png", "purpose": "any" }]
+}

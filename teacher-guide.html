@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ctrl+Create — Grown-Ups' Corner: Teacher Guide &amp; Standards</title>
+<style>
+  :root {
+    --ink: #3a3226;
+    --ink-soft: #6b6152;
+    --paper: #fbf6ea;
+    --kraft: #efe6d2;
+    --accent: #59c059;
+    --accent-dark: #3d9b3d;
+    --apple: #e5533c;
+    --blue: #4c97ff;
+    --gold: #e8b23c;
+    --edge: #d8cbae;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--kraft);
+    color: var(--ink);
+    font: 16px/1.6 Georgia, "Times New Roman", serif;
+  }
+  .page {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px 28px 64px;
+  }
+  header.masthead {
+    background: var(--paper);
+    border: 2px solid var(--edge);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  h1 { font-size: 34px; margin: 0 0 6px; letter-spacing: .5px; }
+  .masthead .sub { color: var(--ink-soft); font-style: italic; margin: 0 0 14px; }
+  .badge-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .badge {
+    background: var(--accent); color: #fff; border-radius: 999px;
+    padding: 4px 14px; font: bold 13px/1.5 Verdana, sans-serif;
+  }
+  .badge.alt { background: var(--blue); }
+  .badge.gold { background: var(--gold); }
+  h2 {
+    font-size: 24px; margin: 40px 0 4px;
+    padding-bottom: 6px; border-bottom: 3px dashed var(--edge);
+  }
+  h2 .no { color: var(--apple); margin-right: 8px; }
+  h3 { font-size: 18px; margin: 22px 0 6px; color: var(--accent-dark); }
+  .card {
+    background: var(--paper);
+    border: 2px solid var(--edge);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin: 14px 0;
+  }
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tool {
+    background: var(--paper); border: 2px solid var(--edge);
+    border-radius: 12px; padding: 12px 16px;
+  }
+  .tool b { color: var(--accent-dark); }
+  table {
+    width: 100%; border-collapse: collapse; background: var(--paper);
+    border: 2px solid var(--edge); border-radius: 12px; overflow: hidden;
+    font-size: 14.5px;
+  }
+  th {
+    background: var(--accent); color: #fff; text-align: left;
+    padding: 9px 12px; font-family: Verdana, sans-serif; font-size: 13px;
+  }
+  td { padding: 9px 12px; border-top: 1px solid var(--edge); vertical-align: top; }
+  td.code { white-space: nowrap; font: bold 13px/1.5 Verdana, sans-serif; color: var(--apple); }
+  .lesson { border-left: 6px solid var(--accent); }
+  .lesson.l2 { border-left-color: var(--blue); }
+  .lesson.l3 { border-left-color: var(--apple); }
+  .meta { font: bold 12px/1.6 Verdana, sans-serif; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .06em; }
+  .vocab { background: #fff; border: 1.5px dashed var(--edge); border-radius: 10px; padding: 8px 14px; font-size: 14.5px; }
+  ol.steps li { margin: 7px 0; }
+  .blockname {
+    font: bold 12.5px/1.4 Verdana, sans-serif; background: var(--blue); color: #fff;
+    border-radius: 6px; padding: 1px 7px; white-space: nowrap;
+  }
+  .blockname.ev { background: var(--gold); color: #5b4300; }
+  .blockname.ct { background: #ffab19; color: #5b3a00; }
+  .blockname.lk { background: #9966ff; }
+  .blockname.sn { background: #cf63cf; }
+  .blockname.se { background: #5cb1d6; }
+  .blockname.vr { background: #ff8c1a; }
+  .blockname.pn { background: #0fbd8c; }
+  .blockname.jc { background: #ff6680; }
+  .q { margin: 6px 0; }
+  .rubric td:first-child { font-weight: bold; white-space: nowrap; }
+  .tip {
+    background: #fdf3d7; border: 2px solid var(--gold); border-radius: 12px;
+    padding: 12px 18px; margin: 14px 0; font-size: 15px;
+  }
+  .tip b { color: #8a6413; }
+  footer {
+    margin-top: 48px; text-align: center; color: var(--ink-soft);
+    font-size: 13.5px; font-style: italic;
+  }
+  @media (max-width: 640px) { .tools { grid-template-columns: 1fr; } }
+  @media print {
+    body { background: #fff; }
+    .page { padding: 0; max-width: none; }
+    .card, .tool, table, header.masthead { border-color: #bbb; break-inside: avoid; }
+    h2 { break-after: avoid; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <h1>✂️ Ctrl+Create</h1>
+    <p class="sub">Grown-Ups' Corner — Teacher Guide &amp; Standards Alignment</p>
+    <div class="badge-row">
+      <span class="badge">Grades K–5</span>
+      <span class="badge alt">Computer Science · Computational Thinking</span>
+      <span class="badge gold">No accounts · Runs offline · Saves on this device</span>
+    </div>
+  </header>
+
+  <!-- ================================================== 1. OVERVIEW -->
+  <h2><span class="no">1.</span> Overview</h2>
+  <div class="card">
+    <p><strong>Ctrl+Create</strong> is a block-based coding studio in a hand-cut
+    construction-paper style. Students snap puzzle-piece blocks together to
+    program animated characters ("sprites") on a stage — the same core model as
+    MIT's Scratch, simplified for early learners and wrapped in a gentle game
+    layer (XP levels, quests, and achievements) that rewards exploration.
+    Everything runs in the browser with no accounts and no internet required;
+    student work saves automatically to the device.</p>
+    <p>The block shapes teach the grammar of programming by touch: <em>event</em>
+    blocks (like <span class="blockname ev">when ⚑ clicked</span>) have a smooth
+    top because every program must <em>start</em> with an event; all other blocks
+    have a notch showing they must connect below something. Children discover
+    "programs need a trigger" before anyone says the word <em>event</em>.</p>
+  </div>
+
+  <h3>The tools your students will actually use</h3>
+  <div class="tools">
+    <div class="tool"><b>Block palette (10 categories, ~100 blocks).</b>
+      Events, Motion, Looks, Sound, Control, Sensing, Operators, Variables, Pen,
+      and Juice. Students drag blocks into the workspace and snap them into
+      scripts; loops and if/else blocks have "mouths" other blocks nest inside.</div>
+    <div class="tool"><b>Green flag ⚑ &amp; stop ⬣.</b> The universal run/stop
+      controls. Pressing ⚑ starts every script that begins with
+      <span class="blockname ev">when ⚑ clicked</span> — the moment of truth for
+      every plan.</div>
+    <div class="tool"><b>Sprites &amp; the character picker.</b> 80+ papercut
+      characters and props across themed packs — the originals (cat, dragon,
+      robot, astronaut…) plus Sports, Space, Old Times, Town &amp; City, Holidays,
+      and Prehistoric sets. Students add them with the ＋ button and can drag them
+      around the stage to place them. Each sprite has its own scripts.</div>
+    <div class="tool"><b>Clones.</b> <span class="blockname ct">create clone of…</span>
+      spawns copies that run their own
+      <span class="blockname ct">when I start as a clone</span> scripts — how
+      students make falling coins, enemy swarms, or rain without adding sprites
+      by hand.</div>
+    <div class="tool"><b>Variables &amp; messages.</b> Students create their own
+      variables (score, lives, speed…) and broadcast messages so sprites can
+      talk to each other — with on-stage score displays via
+      <span class="blockname vr">show variable</span>.</div>
+    <div class="tool"><b>Sensing.</b> <span class="blockname se">touching…?</span>,
+      <span class="blockname se">key pressed?</span>, distance, timers, and
+      <span class="blockname se">ask … and wait</span> for typed answers — the
+      ingredients of interactive games.</div>
+    <div class="tool"><b>Pen.</b> <span class="blockname pn">pen down</span>,
+      color, size, and <span class="blockname pn">stamp</span> turn a moving
+      sprite into a drawing tool — spirals, squares, and generative art.</div>
+    <div class="tool"><b>Juice (special effects).</b>
+      <span class="blockname jc">confetti burst</span>,
+      <span class="blockname jc">shake screen</span>,
+      <span class="blockname jc">pop into scraps</span>, and sparkle trails —
+      instant delight that keeps motivation high.</div>
+    <div class="tool"><b>Sounds (21).</b> Character sounds (bark, roar, giggle,
+      cheer), game feedback (ding, buzzer), and musical notes via
+      <span class="blockname sn">play note</span>.</div>
+    <div class="tool"><b>Backdrops.</b> 26 scenes (meadow, ocean, space, castle,
+      stadium, moon base, pirate cove, volcano valley…) switchable by hand (🎬) or
+      from code with <span class="blockname lk">switch backdrop to…</span> —
+      multi-level games and cross-curricular settings (build a scene from science,
+      history, or a holiday).</div>
+    <div class="tool"><b>Projects shelf &amp; Play mode.</b> 📁 Projects gives
+      named saves with thumbnails plus export/import as files (great for
+      portfolios). ▶ Play mode shows a student's game fullscreen for
+      presentations.</div>
+    <div class="tool"><b>Debug &amp; safety nets.</b> A step-through debugger —
+      <b>Pause Ⅱ</b> then <b>Step ⇥</b> runs the code one block at a time so
+      students can watch their program think and pinpoint a bug. Plus Undo/redo
+      (↩ or Ctrl+Z), right-click to duplicate a stack, a "Find a block…" search,
+      and a trash can — mistakes are cheap, which is the point.</div>
+  </div>
+
+  <div class="tip"><b>Quest tip:</b> the 🗺 Quests button contains 12 built-in,
+  self-paced challenges (add your first blocks → build a 20-block project) that
+  work well as bell-ringers or fast-finisher tasks. Achievements and XP levels
+  reward breadth — trying new categories — not just time on task.</div>
+
+  <!-- ================================================== 2. STANDARDS -->
+  <h2><span class="no">2.</span> Standards Alignment (CSTA K–12 CS Standards)</h2>
+
+  <h3>Level 1A — Grades K–2</h3>
+  <table>
+    <tr><th style="width:110px">Standard</th><th style="width:38%">Title</th><th>How Ctrl+Create addresses it</th></tr>
+    <tr>
+      <td class="code">1A-AP-10</td>
+      <td>Develop programs with sequences and simple loops, to express ideas or address a problem.</td>
+      <td>Students snap Motion, Looks, and Sound blocks into ordered stacks under a
+      <em>when ⚑ clicked</em> hat, then wrap them in <em>repeat</em> / <em>forever</em>
+      loops to animate a character.</td>
+    </tr>
+    <tr>
+      <td class="code">1A-AP-11</td>
+      <td>Decompose (break down) the steps needed to solve a problem into a precise sequence of instructions.</td>
+      <td>Making Scrappy "dance" forces students to break the dance into single
+      moves — one block per step — and order them correctly.</td>
+    </tr>
+    <tr>
+      <td class="code">1A-AP-12</td>
+      <td>Develop plans that describe a program's sequence of events, goals, and expected outcomes.</td>
+      <td>Students say or draw what their sprite will do <em>before</em> pressing ⚑,
+      then compare the plan to what actually happens on the stage.</td>
+    </tr>
+    <tr>
+      <td class="code">1A-AP-14</td>
+      <td>Debug (identify and fix) errors in an algorithm or program that includes sequences and simple loops.</td>
+      <td>The stage gives instant feedback; students reorder, remove, or retune
+      blocks (e.g., a turn of 90° vs 9°) until the result matches their intent,
+      protected by one-click Undo.</td>
+    </tr>
+    <tr>
+      <td class="code">1A-AP-15</td>
+      <td>Using correct terminology, describe steps taken and choices made during the iterative process of program development.</td>
+      <td>▶ Play mode presentations: students demo their project and narrate which
+      <em>events</em>, <em>loops</em>, and <em>sounds</em> they used and why.</td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:26px">Level 1B — Grades 3–5</h3>
+  <table>
+    <tr><th style="width:110px">Standard</th><th style="width:38%">Title</th><th>How Ctrl+Create addresses it</th></tr>
+    <tr>
+      <td class="code">1B-AP-09</td>
+      <td>Create programs that use variables to store and modify data.</td>
+      <td>Students create their own variables (➕ new variable…), use
+      <em>set / change variable</em> blocks for score and lives, and display them
+      on stage with <em>show variable</em>.</td>
+    </tr>
+    <tr>
+      <td class="code">1B-AP-10</td>
+      <td>Create programs that include sequences, events, loops, and conditionals.</td>
+      <td>A complete Ctrl+Create game uses all four: <em>when key pressed</em> events,
+      block sequences, <em>forever</em> loops, and <em>if touching… then</em>
+      conditionals for collisions.</td>
+    </tr>
+    <tr>
+      <td class="code">1B-AP-11</td>
+      <td>Decompose (break down) problems into smaller, manageable subproblems to facilitate the program development process.</td>
+      <td>A chase game decomposes naturally: one script moves the player, another
+      moves the chaser, a third keeps score — each its own small block stack, often
+      on different sprites communicating by <em>broadcast</em>.</td>
+    </tr>
+    <tr>
+      <td class="code">1B-AP-12</td>
+      <td>Modify, remix, or incorporate portions of an existing program into one's own work, to develop something new or add more advanced features.</td>
+      <td>The 📁 Projects shelf supports duplicate-and-remix, and projects export/
+      import as files so students can extend a classmate's game or a teacher
+      starter project.</td>
+    </tr>
+    <tr>
+      <td class="code">1B-AP-15</td>
+      <td>Test and debug (identify and fix errors) a program or app to ensure it runs as intended.</td>
+      <td>Students run with ⚑, observe failures (sprite walks through walls, score
+      counts wrong), form a hypothesis, and fix the responsible block — the trash
+      can, undo, and instant re-run make test cycles seconds long.</td>
+    </tr>
+    <tr>
+      <td class="code">1B-AP-17</td>
+      <td>Describe choices made during program development using code comments, presentations, and demonstrations.</td>
+      <td>▶ Play mode turns any project into a fullscreen demonstration; students
+      present their game and explain their event, loop, and variable choices.</td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:26px">Bonus: NGSS Engineering Design connection</h3>
+  <table>
+    <tr><th style="width:120px">Standard</th><th style="width:38%">Title</th><th>Connection</th></tr>
+    <tr>
+      <td class="code">3-5-ETS1-2</td>
+      <td>Generate and compare multiple possible solutions to a problem based on how well each is likely to meet the criteria and constraints of the problem.</td>
+      <td>Two students often solve the same challenge differently (glide vs. a
+      repeat-move loop; clones vs. many sprites). Comparing solutions on the
+      shared criteria "does it work? is it simpler?" is a natural class routine.</td>
+    </tr>
+    <tr>
+      <td class="code">3-5-ETS1-3</td>
+      <td>Plan and carry out fair tests in which variables are controlled and failure points are considered to identify aspects of a model or prototype that can be improved.</td>
+      <td>Debugging a game <em>is</em> failure-point analysis: change one block at a
+      time, re-run with ⚑, observe what improved — a controlled test loop.</td>
+    </tr>
+  </table>
+
+  <!-- ================================================== 3. LESSONS -->
+  <h2><span class="no">3.</span> Three Ready-to-Run Lessons</h2>
+
+  <div class="card lesson">
+    <h3 style="margin-top:0">Lesson 1 · Make Scrappy Dance 🕺 (Grades K–2, ~20 min)</h3>
+    <p class="meta">Objective: Students build a first program using an event, a sequence, and a loop.</p>
+    <p class="vocab"><b>Vocabulary:</b> program · block · event · sequence · loop</p>
+    <ol class="steps">
+      <li>Warm-up (3 min, no computer): teacher is a "robot" — students give
+        step-by-step dance orders. Establish: robots only do <em>exactly</em> what
+        they're told, in order.</li>
+      <li>Students open Ctrl+Create. Point out Scrappy the cat and the yellow
+        <b>Events</b> palette that's already open. Drag
+        <span class="blockname ev">when ⚑ clicked</span> into the middle.</li>
+      <li>From <b>Motion</b>, snap on <span class="blockname">move 10 steps</span>
+        and <span class="blockname">turn ↻ 15 degrees</span>. Press ⚑. (It's fast!
+        Why did it only happen once?)</li>
+      <li>From <b>Control</b>, drag a <span class="blockname ct">repeat 10</span>
+        block and tuck the move and turn blocks <em>inside its mouth</em>. Press ⚑
+        — now it's a dance.</li>
+      <li>Personalize: add a <span class="blockname sn">start sound</span> (try
+        Giggle or Cheer) and a <span class="blockname lk">say</span> block.
+        Fast finishers: add <span class="blockname jc">confetti burst</span> from
+        the pink <b>Juice</b> palette.</li>
+      <li>Share: 3–4 volunteers press ▶ Play mode and show their dance on the big
+        screen.</li>
+    </ol>
+    <p class="q"><b>Discuss:</b> What had to come <em>first</em> for anything to happen? ·
+      What did the repeat block save us from doing? ·
+      If you wanted a longer dance, which number would you change?</p>
+  </div>
+
+  <div class="card lesson l2">
+    <h3 style="margin-top:0">Lesson 2 · Star Chaser 🌟 (Grades 2–4, ~30 min)</h3>
+    <p class="meta">Objective: Students use keyboard events, sensing, and a conditional to build a playable chase.</p>
+    <p class="vocab"><b>Vocabulary:</b> input · sensing · condition (if/then) · collision</p>
+    <ol class="steps">
+      <li>Setup (5 min): add a second sprite with ＋ (any character — it's the
+        "star" to catch). Drag it to a corner of the stage.</li>
+      <li>On sprite 1, build arrow-key movement: four
+        <span class="blockname ev">when [arrow] key pressed</span> hats, each with
+        one <span class="blockname">change x by ±10</span> or
+        <span class="blockname">change y by ±10</span> block.
+        (Right-click a finished stack to duplicate it — then just change the key
+        and the block.)</li>
+      <li>Test drive with ⚑. Discuss: which key moves which way? What do x and y
+        mean? (The sprite panel shows live x/y as you drag a sprite.)</li>
+      <li>Add the win check: <span class="blockname ev">when ⚑ clicked</span> →
+        <span class="blockname ct">forever</span> →
+        <span class="blockname ct">if</span>
+        <span class="blockname se">touching [the star]?</span> then →
+        <span class="blockname sn">start sound Ding</span> +
+        <span class="blockname jc">confetti burst</span>.</li>
+      <li>Level it up: inside the if, add <span class="blockname">go to x/y</span>
+        with new numbers so the star "escapes" to a new spot after each catch.</li>
+      <li>Save it: 📁 Projects → the project keeps their name and a snapshot.</li>
+    </ol>
+    <p class="q"><b>Discuss:</b> How does the game <em>know</em> you caught the star? ·
+      Why does the touching check live inside a forever loop? ·
+      What would make the game harder or easier?</p>
+  </div>
+
+  <div class="card lesson l3">
+    <h3 style="margin-top:0">Lesson 3 · Coin Collector Deluxe 🪙 (Grades 4–5, ~30 min)</h3>
+    <p class="meta">Objective: Students combine clones and a custom variable to build a scoring game, then present it.</p>
+    <p class="vocab"><b>Vocabulary:</b> variable · clone · broadcast · initialize</p>
+    <ol class="steps">
+      <li>Start from Lesson 2's project (📁 Projects → open it) or fresh. Create a
+        variable: any Variables dropdown → <b>➕ new variable…</b> → name it
+        <em>coins</em>.</li>
+      <li>Initialization ritual: under <span class="blockname ev">when ⚑ clicked</span>,
+        add <span class="blockname vr">set coins to 0</span> and
+        <span class="blockname vr">show variable coins</span>. (Ask: why must the
+        score reset when the game starts?)</li>
+      <li>Add a "coin" sprite. Give it:
+        <span class="blockname ev">when ⚑ clicked</span> →
+        <span class="blockname ct">repeat 8</span> →
+        <span class="blockname ct">create clone of myself</span>.</li>
+      <li>Then: <span class="blockname ct">when I start as a clone</span> →
+        <span class="blockname">go to x: (pick random −220 to 220) y: (pick random −160 to 160)</span>
+        using the green Operators block plugged into the inputs.</li>
+      <li>Collection: still in the clone script, add
+        <span class="blockname ct">forever</span> →
+        <span class="blockname ct">if</span> <span class="blockname se">touching [player]?</span>
+        then → <span class="blockname vr">change coins by 1</span>,
+        <span class="blockname sn">start sound Coin</span>,
+        <span class="blockname ct">delete this clone</span>.</li>
+      <li>Presentations: each student opens ▶ Play mode and demos for the class,
+        explaining one clever choice they made.</li>
+    </ol>
+    <p class="q"><b>Discuss:</b> Why use clones instead of adding 8 coin sprites by hand? ·
+      What breaks if you forget <em>set coins to 0</em>? ·
+      Where else in real apps do you see a number that must "reset"?</p>
+  </div>
+
+  <!-- ================================================== 4. CONVERSATION -->
+  <h2><span class="no">4.</span> Conversation Starters</h2>
+  <div class="card">
+    <ul>
+      <li>"Walk me through your blocks from the top — what happens first?"</li>
+      <li>"What was the hardest bug you fixed? How did you figure it out?"</li>
+      <li>"If I pressed the green flag right now, what do you <em>predict</em> happens?"</li>
+      <li>"Which block is doing the most work in this project?"</li>
+      <li>"What did you try that <em>didn't</em> work? What did that teach you?"</li>
+      <li>"If you had ten more minutes, what would you add next?"</li>
+      <li>"Could you make this same thing with fewer blocks?"</li>
+      <li>"Show me your favorite project on the Projects shelf — why that one?"</li>
+    </ul>
+  </div>
+
+  <!-- ================================================== 5. RUBRIC -->
+  <h2><span class="no">5.</span> Capstone Rubric — "Make Your Own Mini-Game"</h2>
+  <div class="card">
+    <p>Capstone task: <em>design and build an original mini-game with a goal, at
+    least two sprites, and a way to win — then present it in Play mode.</em></p>
+    <table class="rubric">
+      <tr><th style="width:150px">Level</th><th>What it looks like</th></tr>
+      <tr>
+        <td>📄 Paper Scrap<br>(Emerging)</td>
+        <td>Program runs from the green flag with a working sequence; may use one
+        loop. Movement or sound happens, but there is no goal or interaction yet.
+        Student can point to what each block does.</td>
+      </tr>
+      <tr>
+        <td>✂️ Craft Apprentice<br>(Proficient)</td>
+        <td>Game uses events, a loop, <em>and</em> a conditional (e.g., a touching
+        check). Player can interact via keys or clicks and something meaningful
+        happens on success. Student explains the sequence and fixed at least one
+        bug independently.</td>
+      </tr>
+      <tr>
+        <td>🏆 Papercut Legend<br>(Exemplary)</td>
+        <td>All of the above plus data or scale: a custom variable tracks score or
+        lives, and/or clones populate the game. Multiple sprites or broadcasts
+        coordinate. Student presents in Play mode, justifying design choices and
+        naming a concrete next improvement.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="tip"><b>Portfolio tip:</b> 📁 Projects → the ⬇ button exports any
+  project as a small <em>.ctrlcreate.json</em> file — collect them in a class folder,
+  or import a student's file on the classroom display for sharing day.</div>
+
+  <footer>
+    Ctrl+Create · Grown-Ups' Corner · CSTA K–12 Computer Science Standards © CSTA;
+    NGSS © NGSS Lead States. Cited for alignment purposes.<br>
+    This page is self-contained and prints cleanly — File → Print.
+  </footer>
+</div>
+</body>
+</html>

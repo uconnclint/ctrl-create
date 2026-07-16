@@ -1,0 +1,12 @@
+# OS / editor
+.DS_Store
+*.swp
+
+# local agent / dev config (machine-specific paths)
+.claude/
+
+# throwaway art-generation working files (high-res sources; not shipped)
+tmp/
+
+# node (none committed, but just in case)
+node_modules/

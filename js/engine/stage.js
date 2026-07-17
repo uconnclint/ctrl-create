@@ -39,14 +39,33 @@
       box-shadow:3px 4px 0 rgba(58,50,38,.2);font:600 12px -apple-system,"SF Pro Rounded",sans-serif;color:#3a3226}
     .ask-box input{width:100%;box-sizing:border-box;margin-top:6px;border:1.5px solid #cbbfa5;
       border-radius:8px;padding:6px 8px;font:inherit;outline:none}
-    .sprite-chip{display:flex;align-items:center;gap:8px;padding:5px 8px;margin:4px 0;
+    .sprite-chip{position:relative;display:flex;align-items:center;gap:8px;padding:5px 8px;margin:4px 0;
       border-radius:10px;cursor:pointer;border:1.5px dashed transparent}
     .sprite-chip:hover{background:rgba(58,50,38,.06)}
     .sprite-chip.selected{border-color:#cbbfa5;background:#fffdf7;box-shadow:2px 2px 0 rgba(58,50,38,.12)}
     .sprite-chip canvas{width:34px;height:34px}
-    .sprite-chip .nm{font:700 12px -apple-system,"SF Pro Rounded",sans-serif;color:#3a3226}
+    .sprite-chip .nm{font:700 12px -apple-system,"SF Pro Rounded",sans-serif;color:#3a3226;flex:1}
+    .sprite-chip-x{flex:none;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;
+      justify-content:center;background:#f0e6d2;color:#9a8f78;font:800 11px sans-serif;cursor:pointer;
+      border:1.5px solid #d8cbae;opacity:.55;transition:opacity .12s,transform .08s,background .12s,color .12s}
+    .sprite-chip:hover .sprite-chip-x{opacity:1}
+    .sprite-chip-x:hover{background:#e5533c;color:#fff;border-color:#c0392b;transform:scale(1.12)}
+    .sprite-chip-x:focus-visible{outline:2px solid #4c97ff;outline-offset:1px;opacity:1}
     #sprite-props{font:600 11px -apple-system,"SF Pro Rounded",sans-serif;color:#3a3226;
       opacity:.8;display:flex;gap:10px;padding:6px 4px;flex-wrap:wrap}
+    .sprite-confirm{position:fixed;inset:0;z-index:450;display:flex;align-items:center;
+      justify-content:center;background:rgba(58,50,38,.4)}
+    .sprite-confirm-card{background:#fbf6ea;border:2px solid #cbbfa5;border-radius:16px;padding:18px 20px;
+      width:min(300px,86vw);text-align:center;box-shadow:5px 7px 0 rgba(58,50,38,.28);transform:rotate(-.5deg)}
+    .sprite-confirm-card canvas{width:56px;height:56px;margin:0 auto 4px;display:block}
+    .sprite-confirm-card h3{margin:2px 0 4px;font:800 16px -apple-system,"SF Pro Rounded",sans-serif;color:#3a3226}
+    .sprite-confirm-card p{margin:0 0 14px;font:600 12px -apple-system,"SF Pro Rounded",sans-serif;color:#6b6152}
+    .sprite-confirm-btns{display:flex;gap:8px}
+    .sprite-confirm-btns button{flex:1;padding:9px 0;border:none;border-radius:10px;cursor:pointer;
+      font:800 13px sans-serif;color:#fff;box-shadow:2px 3px 0 rgba(58,50,38,.3)}
+    .sprite-confirm-btns button:active{transform:translate(1px,2px);box-shadow:1px 1px 0 rgba(58,50,38,.3)}
+    .sc-keep{background:#b5a98e}
+    .sc-remove{background:#e5533c}
   ` }));
 
   /* -------------------------------------------------- papercut char lib -- */
@@ -415,18 +434,59 @@
     return t;
   }
 
+  function realSpriteCount() { return sprites.filter((s) => !s.isClone).length; }
+
   function rebuildPanel() {
     listEl.innerHTML = "";
+    const canDelete = realSpriteCount() > 1;
     sprites.filter((s) => !s.isClone).forEach((s) => {
-      const chip = el("button", {
+      const chip = el("div", {
         class: "sprite-chip" + (s.id === selectedId ? " selected" : ""),
-        type: "button", "aria-pressed": s.id === selectedId ? "true" : "false",
+        role: "button", tabindex: "0",
+        "aria-pressed": s.id === selectedId ? "true" : "false",
         "aria-label": "Select sprite " + s.name,
         onClick: () => select(s.id),
+        onKeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(s.id); } },
       }, [thumb(s.char), el("span", { class: "nm", text: s.name })]);
       chip.title = "Select " + s.name;
+      // Scratch-style delete badge — the obvious place kids look. Hidden when
+      // only one sprite remains (you always need at least one).
+      if (canDelete) {
+        const x = el("span", {
+          class: "sprite-chip-x", role: "button", tabindex: "0",
+          text: "✕", title: "Remove " + s.name, "aria-label": "Remove sprite " + s.name,
+          onClick: (e) => { e.stopPropagation(); confirmRemove(s.id); },
+          onKeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); confirmRemove(s.id); } },
+        });
+        chip.appendChild(x);
+      }
       listEl.appendChild(chip);
     });
+  }
+
+  // Friendly papercut "are you sure?" — one click, no timeout race.
+  let confirmEl = null;
+  function confirmRemove(id) {
+    const s = get(id);
+    if (!s || realSpriteCount() <= 1) return;
+    if (confirmEl) confirmEl.remove();
+    const go = () => { confirmEl.remove(); confirmEl = null; removeSprite(id); if (CtrlCreate.sound) CtrlCreate.sound.play("Snip"); };
+    const close = () => { if (confirmEl) { confirmEl.remove(); confirmEl = null; } };
+    confirmEl = el("div", { class: "sprite-confirm", onPointerdown: (e) => { if (e.target === confirmEl) close(); } }, [
+      el("div", { class: "sprite-confirm-card paper-card" }, [
+        thumb(s.char, 56),
+        el("h3", { text: "Remove " + s.name + "?" }),
+        el("p", { text: "Its code will be deleted too. This can’t be undone." }),
+        el("div", { class: "sprite-confirm-btns" }, [
+          el("button", { class: "sc-keep", text: "Keep", onClick: close }),
+          el("button", { class: "sc-remove", text: "✂ Remove", onClick: go }),
+        ]),
+      ]),
+    ]);
+    document.body.appendChild(confirmEl);
+    const kb = (e) => { if (e.key === "Escape") { close(); window.removeEventListener("keydown", kb); } };
+    window.addEventListener("keydown", kb);
+    setTimeout(() => { const b = confirmEl && confirmEl.querySelector(".sc-remove"); if (b) b.focus(); }, 30);
   }
 
   function refreshProps() {
@@ -762,7 +822,7 @@
   /* ------------------------------------------------------------- expose -- */
   CtrlCreate.stage = {
     W, H, HW, HH,
-    sprites, get, selected, addSprite, removeSprite, select,
+    sprites, get, selected, addSprite, removeSprite, confirmRemove, select,
     mouse, hitTest, halfExtent,
     setMonitor, ask, cancelAsk,
     chars: CHARS, charKeys: CHAR_KEYS, roster: ROSTER, thumb,

@@ -153,11 +153,9 @@
   ]);
   rotation.addEventListener("change", () => { const s = S.stage.selected(); if (s) { s.rotationStyle = rotation.value; S.track("sprite:edited", { id: s.id }); } });
   spriteEditor.appendChild(rotation);
-  let deleteArmed = false;
   const del = el("button", { class: "sprite-remove", text: "Remove sprite", onClick: function () {
-    const s = S.stage.selected(); if (!s || S.stage.sprites.filter((x) => !x.isClone).length <= 1) return;
-    if (!deleteArmed) { deleteArmed = true; del.textContent = "Click again to remove"; setTimeout(() => { deleteArmed = false; del.textContent = "Remove sprite"; }, 2500); return; }
-    S.stage.removeSprite(s.id); deleteArmed = false; del.textContent = "Remove sprite";
+    const s = S.stage.selected();
+    if (s && S.stage.confirmRemove) S.stage.confirmRemove(s.id); // single click -> clear confirm dialog
   }});
   spriteEditor.appendChild(del);
   function refreshSpriteEditor() {

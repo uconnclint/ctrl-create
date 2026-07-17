@@ -35,7 +35,9 @@
     el("strong", { class: "coach-title", text: "Free build" }),
     el("div", { class: "coach-goal", text: "Create anything you can imagine." }),
     el("div", { class: "coach-steps" }),
-    el("button", { class: "coach-focus", text: "Show me the block" })
+    el("div", { class: "coach-actions" }, [
+      el("button", { class: "coach-focus", text: "Show me the block" })
+    ])
   ]);
   document.getElementById("workspace-wrap").appendChild(coach);
   const questTargets = {
@@ -56,13 +58,28 @@
     const goal = coach.querySelector(".coach-goal");
     const steps = coach.querySelector(".coach-steps");
     if (!currentQuest) {
-      title.textContent = "Quest trail complete"; goal.textContent = "Build, remix, and teach someone else."; steps.textContent = ""; return;
+      title.textContent = "Quest trail complete"; goal.textContent = "Build, remix, and teach someone else."; steps.textContent = "";
+      syncCoachRead(); return;
     }
     const st = S.game.questState(currentQuest.id);
     title.textContent = currentQuest.icon + " " + currentQuest.name;
     goal.textContent = currentQuest.goalText;
     steps.textContent = st.stepsDone.filter(Boolean).length + " of " + currentQuest.steps.length + " steps complete";
     markTargets();
+    syncCoachRead();
+  }
+
+  // Keep a "Read to me" button in the coach that follows the current quest.
+  let coachReadFor;
+  function syncCoachRead() {
+    const actions = coach.querySelector(".coach-actions");
+    if (!actions || !S.voice) return;
+    const id = currentQuest ? currentQuest.id : null;
+    if (coachReadFor === id) return;               // already showing the right one
+    const old = actions.querySelector(".read-btn");
+    if (old) { if (S.voice.isPlaying()) S.voice.stop(); old.remove(); }
+    if (id) actions.appendChild(S.voice.button(id));
+    coachReadFor = id;
   }
   function markTargets() {
     document.querySelectorAll(".cat-btn.quest-target,.palette-block.quest-target").forEach((n) => n.classList.remove("quest-target"));

@@ -145,6 +145,8 @@
         const doneN = st.stepsDone.filter(Boolean).length;
         const pct = total ? Math.round((doneN / total) * 100) : 0;
         main.appendChild(el("div", { class: "quest-progress" }, [el("div", { class: "quest-fill", style: { width: pct + "%" } })]));
+        // "Read to me" — narrates the quest for kids who can't read it yet
+        if (S.voice) main.appendChild(S.voice.button(q.id));
       }
 
       list.appendChild(el("div", { class: cls }, [el("div", { class: "quest-icon", text: q.icon }), main]));

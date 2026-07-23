@@ -10,3 +10,7 @@ tmp/
 
 # node (none committed, but just in case)
 node_modules/
+
+# Cloudflare Workers dev/deploy cache (account id + local state, not secrets,
+# but not something a fresh clone needs) — Q6 Pages -> Workers deploy config.
+.wrangler/

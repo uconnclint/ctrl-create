@@ -1,0 +1,54 @@
+# _headers — Cloudflare response headers (Workers static assets; Pages read
+# this file too). One owning rule per directory, globs never overlapping —
+# Cloudflare comma-joins colliding Cache-Control values when two rules match
+# the same URL (a real bug hit during the critter-codex migration: a blanket
+# /*.js rule collided with /engine/phaser/vendor/*'s immutable rule and
+# produced a self-contradicting header). Long-cache immutable audio/art;
+# keep HTML/JS/CSS always revalidating. Pattern matches Math Arcade's
+# DOM-track _headers (clint-engine's other core+dom-only game).
+
+# Ctrl+Create's own art/audio/backdrops bundle — same URL whether or not the
+# file underneath ever changes, so this is the same non-hashed-name tradeoff
+# Math Arcade and critter-codex already accept for their own /assets/*.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Entry points — always revalidate so a redeploy is visible on next load.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# The service worker is the one file that MUST always revalidate: sw.js's own
+# CACHE constant is what busts every other cached asset (see js below) on a
+# new deploy, so if sw.js itself got stuck behind a stale cache, a shipped
+# fix would never reach an already-visited Chromebook/iPad. Explicit rule
+# rather than relying on the /*.html fallthrough (sw.js isn't html) or
+# platform defaults.
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Game + engine source, one rule per directory.
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/css/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/engine/core/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/engine/dom/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# engine/phaser/* ships too (sync-engine copies the whole engine/ tree) but
+# this is a DOM-track game — nothing imports Phaser, so no rule is needed;
+# those files just fall back to the platform's default (non-immutable)
+# caching.
+
+/ENGINE_VERSION.json
+  Cache-Control: public, max-age=0, must-revalidate

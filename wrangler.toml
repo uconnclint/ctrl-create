@@ -1,0 +1,35 @@
+# wrangler.toml — Cloudflare Workers static-assets deploy config. Copied from
+# clint-engine's templates/wrangler.toml (Q6: Pages -> Workers). Keep this
+# file (and its sibling `_headers`) version-controlled — an ungitignored
+# deploy config is how a fresh clone stays deployable.
+name = "ctrl-create"
+compatibility_date = "2026-06-01"
+
+[assets]
+directory = "./"
+
+# --- Worker backend (multiplayer rooms, leaderboards, or any /api route) -------------------
+# Ctrl+Create is pure static assets (no server component) and needs nothing below this line.
+# Only uncomment this section if a real server component is ever added (a Durable-Object-backed
+# room, a save-sync endpoint, etc. — see KeyQuest for a worked example). `run_worker_first`
+# is required for any path that must reach the Worker script instead of being served straight
+# from [assets] — without it, a request to e.g. /api/join would just 404 against the static
+# asset router and your Worker code would never run.
+#
+# main = "src/worker.js"
+#
+# [assets]
+# directory = "./public"
+# binding = "ASSETS"
+# run_worker_first = ["/api/*", "/ws"]
+#
+# [observability]
+# enabled = true
+#
+# [[durable_objects.bindings]]
+# name = "ROOM"
+# class_name = "GameRoom"
+#
+# [[migrations]]
+# tag = "v1"
+# new_sqlite_classes = ["GameRoom"]

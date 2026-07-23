@@ -181,6 +181,10 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
 .ctl-stop { color: var(--red-d); transform: rotate(var(--tilt-b)); }
 .ctl-stop:hover { box-shadow: 0 0 0 2px var(--red) inset, var(--shadow-hard-sm); }
 
+/* master mute — same paper-cutout family as .ctl, sized to the >=44px house
+   tap-target rule (the flag/stop/debug .ctl set above is 42px, grandfathered). */
+.ctl-mute { width: 44px; height: 44px; font-size: 19px; }
+
 /* player HUD chips are defined in game.css (.hud-chip) */
 .player-hud { display: flex; align-items: center; gap: 10px; }
 

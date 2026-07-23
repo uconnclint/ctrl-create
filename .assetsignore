@@ -1,0 +1,34 @@
+# .assetsignore — Cloudflare Workers static-assets ignore list (gitignore-style syntax).
+# Adopted from clint-engine/templates/assetsignore (the canonical list — see
+# clint-engine/docs/CONTRACTS.md "Templates & tools"). Keeps dev-only files, source control,
+# and editable art masters out of the deployed bundle.
+#
+# engine/core and engine/dom (and engine/phaser, unused but harmless) DO ship — the game
+# imports them at runtime. Nothing under engine/ needs excluding here.
+#
+# DEVIATION FROM THE CANONICAL TEMPLATE, found here (read code, not docs — MIGRATION_PLAN.md
+# §"How later sessions use this file"): the template's bare `voice` line is NOT included below.
+# Verified via js/voice.js: this game's "Read to me" quest narration fetches its Kokoro-TTS clips
+# straight from assets/voice/quest_<id>.m4a at runtime (SRC = (id) => "assets/voice/quest_" + id
+# + ".m4a") — that folder is shipped content, not a dev-only raw-recordings staging dir. Excluding
+# it would silently break read-aloud in production. (Math Arcade's own .assetsignore hit and
+# documented the same trap for its assets/audio/voice|vo/ clip banks.) The template's
+# `art/img/*.png` line is also dropped — this game has no top-level art/ directory (its art lives
+# under assets/art/, which is not excluded).
+
+**/.wrangler
+**/node_modules
+**/.git
+**/.DS_Store
+**/.env
+.claude
+*.zip
+*.md
+wrangler.toml
+.assetsignore
+tools/
+docs/
+
+# Ctrl+Create-specific dev-only paths (see .gitignore for the same reasoning):
+tmp/
+tests/

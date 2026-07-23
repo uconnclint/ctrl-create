@@ -1,4 +1,4 @@
-const CACHE = "ctrlcreate-v16";
+const CACHE = "ctrlcreate-v18";
 const CORE = ["./", "index.html", "css/theme.css?v=16", "css/blocks.css?v=16", "css/game.css?v=16", "css/enhancements.css?v=16",
   "js/core.js?v=16", "js/blockDefs.js?v=16", "js/main.js?v=16", "js/enhancements.js?v=16"];
 self.addEventListener("install", (e) => e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())));

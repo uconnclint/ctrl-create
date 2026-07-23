@@ -6,7 +6,7 @@
  * Attaches `CtrlCreate.sound` with:
  *   init(), play(name), playUntilDone(name), stopAll(),
  *   setVolume(pct), changeVolume(delta), getVolume(),
- *   playNote(midi, beats)
+ *   setMuted(bool), getMuted(), playNote(midi, beats)
  *
  * Design:
  *   - Lazy AudioContext, resumed on the first user gesture (autoplay policy).
@@ -16,6 +16,11 @@
  *     resolve Promises, never to schedule sound.
  *   - If WebAudio is unavailable, every method degrades to a safe no-op and
  *     playUntilDone still resolves after the nominal duration.
+ *   - setMuted()/getMuted(): the engine-level master mute (js/engine-bridge.js
+ *     wires this to ctx.settings' 'muted', driven by the #btn-mute toolbar
+ *     toggle). Starts true (Clint's Q11 "start muted" standard) and gates the
+ *     master GainNode independently of volumePct and of "Quiet classroom
+ *     mode" (js/main.js's celebrate(), unrelated to this file).
  *
  * Depends on: js/core.js (CtrlCreate.emit / CtrlCreate.on / CtrlCreate.track)
  * ==========================================================================*/
@@ -37,12 +42,27 @@
   var live = new Set();   // every currently-playing source node
   var gesturesArmed = false;
 
-  var volumePct = 100;    // 0..100, master volume
+  var volumePct = 100;    // 0..100, master volume (kid-block-driven; see sound_setvol)
+
+  // Engine-level master mute — independent of volumePct above and of "Quiet
+  // classroom mode" (which only ever gates celebration cues in js/main.js).
+  // Defaults TRUE (Clint's Q11 "start muted" standard) so a fresh AudioContext
+  // is never audible even in the brief window before js/engine-bridge.js
+  // applies the real persisted ctx.settings.get('muted') value. Wired via
+  // setMuted()/getMuted() below, driven by the #btn-mute toggle through
+  // ctx.settings — this module never touches localStorage itself.
+  var masterMuted = true;
 
   // Convert a 0..100 percentage into a gain 0..1 with a gentle perceptual curve.
   function pctToGain(pct) {
     var p = Math.max(0, Math.min(100, pct)) / 100;
     return Math.pow(p, 1.5);
+  }
+
+  // The one place mute and volume combine into an actual gain value — the
+  // single gating point every code path below goes through.
+  function effectiveGain() {
+    return masterMuted ? 0 : pctToGain(volumePct);
   }
 
   // Resume the context if the browser suspended it (autoplay policy).
@@ -75,7 +95,7 @@
     try {
       ctx = new AC();
       master = ctx.createGain();
-      master.gain.value = pctToGain(volumePct);
+      master.gain.value = effectiveGain();
       master.connect(ctx.destination);
     } catch (e) {
       supported = false;
@@ -523,12 +543,14 @@
     live.clear();
   }
 
-  // Master volume controls (0..100).
+  // Master volume controls (0..100). A kid's own "set volume to %" block still
+  // works while master-muted (volumePct updates, getVolume() reflects it) —
+  // it just has no audible effect until the master mute is lifted.
   function setVolume(pct) {
     pct = Math.max(0, Math.min(100, isFinite(pct) ? pct : 100));
     volumePct = pct;
     if (master && ctx) {
-      master.gain.setTargetAtTime(pctToGain(pct), ctx.currentTime, 0.01);
+      master.gain.setTargetAtTime(effectiveGain(), ctx.currentTime, 0.01);
     }
     return volumePct;
   }
@@ -536,6 +558,18 @@
     return setVolume(volumePct + (isFinite(delta) ? delta : 0));
   }
   function getVolume() { return volumePct; }
+
+  // Engine-level master mute (see `masterMuted` above). Independent of
+  // volumePct/"Quiet classroom mode" — this is the single audio on/off switch
+  // the #btn-mute toolbar toggle drives via ctx.settings.
+  function setMuted(muted) {
+    masterMuted = !!muted;
+    if (master && ctx) {
+      master.gain.setTargetAtTime(effectiveGain(), ctx.currentTime, 0.01);
+    }
+    return masterMuted;
+  }
+  function getMuted() { return masterMuted; }
 
   // --------------------------------------------------------------------------
   // Musical notes
@@ -602,6 +636,8 @@
     setVolume: setVolume,
     changeVolume: changeVolume,
     getVolume: getVolume,
+    setMuted: setMuted,
+    getMuted: getMuted,
     playNote: playNote
   };
 

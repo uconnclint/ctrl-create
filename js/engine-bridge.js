@@ -1,9 +1,9 @@
 // engine-bridge.js — ES module bridge between the classic-script game
 // (window.CtrlCreate) and clint-engine. MIGRATION_PLAN.md Phase 7 partial
-// adoption: only ctx.settings is consumed (adoption here; the new master
-// mute lands in a follow-up step). ctx.save/progress are intentionally
-// unused: Ctrl+Create's projects/progress/achievements keep living in their
-// own existing ctrlcreate.* localStorage keys and js/game/progress.js — that
+// adoption: only ctx.settings is consumed (adoption below, plus the new
+// #btn-mute master mute). ctx.save/progress are intentionally unused:
+// Ctrl+Create's projects/progress/achievements keep living in their own
+// existing ctrlcreate.* localStorage keys and js/game/progress.js — that
 // stays the record, per CONTRACTS.md's ctx.progress-is-opt-in rule (never
 // enabled here, so the save blob's `progress` key is never touched).
 //
@@ -50,3 +50,35 @@ const ctx = createGameContext({
 });
 
 window.CE = ctx;
+
+// ---- NEW master mute (MIGRATION_PLAN.md Phase 7 step 3) --------------------
+// Single source of truth: ctx.settings.get('muted'). #btn-mute only ever
+// calls ctx.settings.set('muted', ...); everything downstream — the actual
+// audio gate in js/engine/sound.js and this button's own icon — reacts to
+// that one change via onChange, so the two can never drift out of sync.
+//
+// Deliberately separate from "Quiet classroom mode" (CtrlCreate.settings.quiet
+// in the legacy blob, still read directly by js/main.js's celebrate() exactly
+// as before): that toggle keeps gating ONLY celebration cues/toasts. Two
+// independent axes, as specified — muting here does not touch settings.quiet,
+// and quiet mode does not touch sound.js's master gain.
+const btnMute = document.getElementById('btn-mute');
+
+function applyMuted(muted) {
+  if (window.CtrlCreate && CtrlCreate.sound && typeof CtrlCreate.sound.setMuted === 'function') {
+    CtrlCreate.sound.setMuted(muted);
+  }
+  if (btnMute) {
+    btnMute.textContent = muted ? '\u{1F507}' : '\u{1F50A}'; // muted speaker : loud speaker
+    btnMute.setAttribute('aria-pressed', String(!muted));
+  }
+}
+
+applyMuted(ctx.settings.get('muted')); // sync immediately — onChange only fires on future changes.
+ctx.settings.onChange((key, value) => { if (key === 'muted') applyMuted(value); });
+
+if (btnMute) {
+  btnMute.addEventListener('click', () => {
+    ctx.settings.set('muted', !ctx.settings.get('muted'));
+  });
+}

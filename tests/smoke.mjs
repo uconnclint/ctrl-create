@@ -15,7 +15,7 @@ test("block catalog loads with unique opcodes and all categories", async () => {
   const context = vm.createContext(sandbox);
   vm.runInContext(await text("js/core.js"), context);
   vm.runInContext(await text("js/blockDefs.js"), context);
-  const S = context.window.Scratchy;
+  const S = context.window.CtrlCreate;
   assert.ok(S.defList.length >= 90, "expected the full classroom block catalog");
   assert.equal(new Set(S.defList.map((d) => d.opcode)).size, S.defList.length, "opcodes must be unique");
   assert.equal(S.categories.length, 10);
